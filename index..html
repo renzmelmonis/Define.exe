@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="manifest" href="manifest.json">
+  <title>TerminoTech Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+      background-color: #f0fff0;
+    }
+    .logo {
+      width: 120px;
+      margin-bottom: 20px;
+    }
+    .input-field {
+      padding: 10px;
+      width: 80%;
+      max-width: 300px;
+      margin: 10px auto;
+      display: block;
+      font-size: 16px;
+    }
+    .btn {
+      background-color: green;
+      color: white;
+      padding: 12px 30px;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+      border-radius: 5px;
+    }
+    .link {
+      display: block;
+      margin-top: 15px;
+      color: green;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .error {
+      color: red;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <img src="OC LOGO.jpg" alt="Logo" class="logo">
+  <h1>TerminoTech</h1>
+
+  <input type="email" id="email" class="input-field" placeholder="Email address">
+  <input type="password" id="password" class="input-field" placeholder="Password">
+  <button class="btn" onclick="login()">LOGIN</button>
+  <div class="link" onclick="forgotPassword()">Forgot password?</div>
+  <hr style="width: 60%; margin: 20px auto;">
+  <div class="link" onclick="alert('Redirecting to Sign Up (Coming Soon)')">New to TerminoTech? Sign Up Here</div>
+
+  <div id="error" class="error"></div>
+
+  <script>
+    function login() {
+      const email = document.getElementById('email').value.trim().toLowerCase();
+      const errorDiv = document.getElementById('error');
+
+      if (!email.endsWith("@olivarezcollegetagaytay.edu.ph")) {
+        errorDiv.textContent = "Only @olivarezcollegetagaytay.edu.ph emails are allowed.";
+        return;
+      }
+
+      // Skip password check, allow login
+      localStorage.setItem("terminotech_user", email);
+      window.location.href = "home.html";
+    }
+
+    function forgotPassword() {
+      alert("Please contact your administrator to reset your password.");
+    }
+  </script>
+
+</body>
+</html>
