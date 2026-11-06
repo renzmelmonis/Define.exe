@@ -21,7 +21,11 @@ npm run format:check
 npm run build
 ```
 
-Deploy the **contents of `dist/`** to a static host. Serve over HTTP rather than opening HTML through `file://`, because the app uses JavaScript modules. Build output contains six clean pages, content-hashed CSS/JS, local assets, and redirects for all 19 original HTML URLs. No deployment or remote push was performed.
+Deploy the **contents of `dist/`** to a static host. Serve over HTTP rather than opening HTML through `file://`, because the app uses JavaScript modules. Build output contains six clean pages, content-hashed CSS/JS, local assets, and redirects for all 19 original HTML URLs. GitHub Pages builds and deploys `dist/` automatically when `main` is updated.
+
+## GitHub Pages
+
+The `.github/workflows/pages.yml` workflow installs dependencies, checks syntax, runs tests, builds the site, and uploads only `dist/`. Pages must use **GitHub Actions** as its publishing source, rather than deploying the repository root from a branch. Manual redeployment is available through the workflow’s **Run workflow** action.
 
 ## Pages
 
