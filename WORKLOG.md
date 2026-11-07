@@ -40,3 +40,10 @@ Readable-code refactor completed: named event handlers and normal loops; page ma
 The local checkout was renamed to /Users/renz/Desktop/james/Define.exe to match the GitHub repository. The task-owned development server was stopped. The tested source was published to main and verified at the renamed Pages URL.
 
 Final handoff: https://renzmelmonis.github.io/Define.exe/ and https://github.com/renzmelmonis/Define.exe. All current revision acceptance items are complete. The live tab was left open; viewport overrides were reset and the local preview server is stopped. Evidence: .impeccable/review/revision/published.png and responsive.json. No dictionary terms were removed.
+
+
+## Final steering: remove compatibility code
+
+The owner requested removing all migration and legacy handlers before final handoff. Removed old HTML redirect generation, old favorites import logic, the historical-content verifier command/file, old profile/email/score storage keys and writes, the compatibility information form/help, their CSS, and obsolete tests. Current data keys are define_favorites, define_scores, and define_profile_email only. The catalog data itself remains unchanged: 129 terms and 35 questions. The build now clears dist before creating only the six current pages. Current syntax/build checks and 12 tests pass; browser verification passed; the final release workflow/status is recorded separately in .impeccable/review/revision/release.json and GitHub Actions.
+
+Current-only architecture verified in the browser: profile create/remove, saved term across navigation, full ten-question quiz, current score history, and fixture reset. Source scan has no old-key readers or conversion/redirect functions. All source changes are ready for the final authorized publication; the release record completes the publication checklist without another source-only deployment.

@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { terms, quizzes } from "../src/data.js";
-import { createStore, migrateFavorites } from "../src/storage.js";
+import { createStore } from "../src/storage.js";
 import {
   createQuiz,
   answerQuiz,
@@ -141,35 +141,13 @@ test("shuffle leaves source unchanged and preserves each question", function () 
   assert.notDeepEqual(result, source);
 });
 
-test("both legacy favorites formats migrate with case normalization and custom terms", function () {
-  const storage = memoryStorage({
-    favorites: '["CPU", "JavaScript", "My custom term"]',
-    favoritesAll:
-      "\nCPU - Central Processing Unit | Definition\nHTML - HyperText Markup Language | Definition",
-  });
-  const store = createStore(storage);
-  const expected = ["cpu", "javascript", "My custom term", "html"];
-  const migrated = migrateFavorites(store, terms);
-  assert.deepEqual(migrated, expected);
-  assert.deepEqual(store.read("define_favorites", []), expected);
-});
-
-test("existing new collection takes precedence over stale legacy data", function () {
-  const storage = memoryStorage({
-    define_favorites: "[]",
-    favorites: '["CPU"]',
-  });
-  const store = createStore(storage);
-  assert.deepEqual(migrateFavorites(store, terms), []);
-});
-
 test("malformed local data recovers without crashing", function () {
   const storage = memoryStorage({
-    favorites: '{"unexpected": true}',
+    define_favorites: "invalid JSON",
     define_scores: "broken",
   });
   const store = createStore(storage);
-  assert.deepEqual(migrateFavorites(store, terms), []);
+  assert.deepEqual(store.read("define_favorites", []), []);
   assert.deepEqual(store.read("define_scores", {}), {});
 });
 
@@ -210,7 +188,7 @@ test("failed writes and removals remain consistent in page memory", function () 
 test("successful storage does not hide updates from other tabs", function () {
   const storage = memoryStorage();
   const store = createStore(storage);
-  store.write("favorites", ["cpu"]);
-  storage.setItem("favorites", '["html"]');
-  assert.deepEqual(store.read("favorites", []), ["html"]);
+  store.write("define_favorites", ["cpu"]);
+  storage.setItem("define_favorites", '["html"]');
+  assert.deepEqual(store.read("define_favorites", []), ["html"]);
 });

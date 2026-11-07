@@ -1,10 +1,10 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFile, stat } from "node:fs/promises";
+import { readFile, readdir, stat } from "node:fs/promises";
 import path from "node:path";
-import { build, pages, redirects } from "../scripts/build.mjs";
+import { build, pages } from "../scripts/build.mjs";
 
-test("build emits all canonical pages, complete asset links, and all legacy redirects", async function () {
+test("build emits only the current pages with complete asset links", async function () {
   const outputDirectory = await build();
   const filenames = Object.keys(pages);
 
@@ -26,16 +26,15 @@ test("build emits all canonical pages, complete asset links, and all legacy redi
     }
   }
 
-  const oldFilenames = Object.keys(redirects);
-  assert.equal(oldFilenames.length, 19);
-  for (const filename of oldFilenames) {
-    const destination = redirects[filename];
-    const outputPath = path.join(outputDirectory, filename);
-    const html = await readFile(outputPath, "utf8");
-    assert.ok(html.includes('content="0;url=' + destination + '"'));
-    const destinationParts = destination.split("?");
-    assert.ok(Object.hasOwn(pages, destinationParts[0]));
+  const outputFiles = await readdir(outputDirectory);
+  let htmlCount = 0;
+  for (const filename of outputFiles) {
+    if (filename.endsWith(".html")) {
+      assert.ok(Object.hasOwn(pages, filename));
+      htmlCount = htmlCount + 1;
+    }
   }
+  assert.equal(htmlCount, 6);
 
   const manifestPath = path.join(outputDirectory, "manifest.json");
   const manifestText = await readFile(manifestPath, "utf8");

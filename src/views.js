@@ -574,27 +574,13 @@ export function welcomeHTML() {
             This is a local profile, saved on this browser.
             No password or online account is created.
           </p>
-          <details class="profile-help">
-            <summary>Looking for sign-up or a password reset?</summary>
-            <p>
-              The original site has no online account service.
-              Use an email here to personalize this browser,
-              or explore without a profile.
-            </p>
-          </details>
         </div>
       </div>
     </section>
   `;
 }
 
-export function profileHTML(
-  profile,
-  savedCount,
-  records,
-  savedEmail,
-  savedScore,
-) {
+export function profileHTML(profile, savedCount, records) {
   let heading = "Make yourself at home.";
   let description = "You’re exploring without a local profile.";
   let profileAction = `
@@ -662,31 +648,6 @@ export function profileHTML(
           They don’t sync to another device. Removing the profile keeps your
           saved terms and quiz results.
         </p>
-        <details class="profile-help">
-          <summary>Legacy saved information</summary>
-          <form id="legacy-form">
-            <label for="legacy-email">Saved email</label>
-            <input
-              id="legacy-email"
-              type="email"
-              value="${escapeHTML(savedEmail)}"
-              placeholder="Your email"
-            >
-            <label for="legacy-score">Saved score</label>
-            <input
-              id="legacy-score"
-              type="number"
-              min="0"
-              value="${escapeHTML(savedScore)}"
-            >
-            <div class="button-group">
-              <button class="button" type="submit">Save information</button>
-              <button class="button quiet" type="button" data-action="clear-info">
-                Clear this information
-              </button>
-            </div>
-          </form>
-        </details>
       </div>
     </section>
   `;

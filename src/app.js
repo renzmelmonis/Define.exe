@@ -8,7 +8,7 @@ import {
   termRow,
   windowBar,
 } from "./components.js";
-import { createStore, migrateFavorites } from "./storage.js";
+import { createStore } from "./storage.js";
 import { createQuiz, answerQuiz, nextQuestion, quizScore } from "./quiz.js";
 import {
   headerHTML,
@@ -67,9 +67,8 @@ function handleStorageFailure() {
 }
 
 const store = createStore(browserStorage, handleStorageFailure);
-let favorites = migrateFavorites(store, terms);
-// Keep the original key so existing local profiles continue to work.
-let profileEmail = store.raw("terminotech_user");
+let favorites = readFavorites();
+let profileEmail = store.raw("define_profile_email");
 let featuredIndex = 0;
 let quizState = null;
 let selectedAnswer = null;
@@ -84,6 +83,21 @@ for (const id of featuredIDs) {
   if (term !== null) {
     featuredTerms.push(term);
   }
+}
+
+function readFavorites() {
+  const savedValues = store.read("define_favorites", []);
+  const validFavorites = [];
+
+  if (!Array.isArray(savedValues)) {
+    return validFavorites;
+  }
+  for (const value of savedValues) {
+    if (typeof value === "string") {
+      validFavorites.push(value);
+    }
+  }
+  return validFavorites;
 }
 
 function findTerm(id) {
@@ -662,7 +676,6 @@ function renderResults() {
     total: quizState.questions.length,
   };
   store.write("define_scores", records);
-  store.write("userScore", score);
   showPage(resultsHTML(level, quizState, score));
   const heading = document.querySelector("h1");
   heading.tabIndex = -1;
@@ -692,7 +705,7 @@ function saveProfile(event) {
   }
 
   try {
-    browserStorage.setItem("terminotech_user", email);
+    browserStorage.setItem("define_profile_email", email);
     location.href = "index.html";
   } catch {
     handleStorageFailure();
@@ -704,33 +717,11 @@ function saveProfile(event) {
 
 function renderProfile() {
   const scores = readScores();
-  const savedEmail = store.raw("userEmail");
-  const savedScore = store.read("userScore", "");
-  showPage(
-    profileHTML(profileEmail, favorites.length, scores, savedEmail, savedScore),
-  );
-  document
-    .querySelector("#legacy-form")
-    .addEventListener("submit", saveLegacyInformation);
-}
-
-function saveLegacyInformation(event) {
-  event.preventDefault();
-  const email = document.querySelector("#legacy-email").value;
-  const score = document.querySelector("#legacy-score").value;
-
-  try {
-    browserStorage.setItem("userEmail", email);
-    browserStorage.setItem("userScore", score);
-    notify("Your information is saved on this browser.");
-  } catch {
-    handleStorageFailure();
-    notify("Browser storage is unavailable. Information could not be saved.");
-  }
+  showPage(profileHTML(profileEmail, favorites.length, scores));
 }
 
 function removeProfile() {
-  store.remove("terminotech_user");
+  store.remove("define_profile_email");
   profileEmail = "";
   renderProfile();
   notify("Local profile removed. Your discoveries are still here.");
@@ -745,13 +736,6 @@ function resetScores() {
     renderProfile();
     notify("Quiz history restored.");
   });
-}
-
-function clearLegacyInformation() {
-  store.remove("userEmail");
-  store.remove("userScore");
-  renderProfile();
-  notify("Legacy saved information cleared.");
 }
 
 // One click listener routes each named button to a small function above.
@@ -789,8 +773,6 @@ function handlePageClick(event) {
     removeProfile();
   } else if (action === "reset-scores") {
     resetScores();
-  } else if (action === "clear-info") {
-    clearLegacyInformation();
   }
 }
 
@@ -806,14 +788,14 @@ function handlePointerInput() {
 
 function handleOtherTabChange(event) {
   if (event.key === "define_favorites") {
-    favorites = migrateFavorites(store, terms);
+    favorites = readFavorites();
     updateFavoriteControls();
     if (pageName === "saved") {
       renderSaved();
     }
   }
-  if (event.key === "terminotech_user") {
-    profileEmail = store.raw("terminotech_user");
+  if (event.key === "define_profile_email") {
+    profileEmail = store.raw("define_profile_email");
     if (pageName === "profile") {
       renderProfile();
     }

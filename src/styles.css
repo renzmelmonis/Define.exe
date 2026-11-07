@@ -1358,8 +1358,7 @@ main {
 .welcome-form-content form {
   margin-top: 27px;
 }
-.welcome-form-content form > label,
-#legacy-form > label {
+.welcome-form-content form > label {
   display: block;
   font-size: 12px;
   font-weight: 600;
@@ -1395,19 +1394,7 @@ main {
   padding-top: 20px;
   border-top: 1px solid var(--soft-line);
 }
-.profile-help {
-  font-size: 12px;
-  line-height: 1.8;
-  margin-top: 18px;
-  color: var(--secondary);
-}
-.profile-help summary {
-  cursor: pointer;
-  padding: 5px 0;
-}
-.profile-help p {
-  margin-top: 8px;
-}
+
 .profile-window {
   max-width: 850px;
   margin-bottom: 80px;
@@ -1463,14 +1450,7 @@ main {
   width: 15px;
   height: 15px;
 }
-#legacy-form {
-  margin-top: 15px;
-}
-#legacy-form input {
-  width: 100%;
-  margin-bottom: 16px;
-  font-size: 14px;
-}
+
 .notification {
   position: fixed;
   bottom: 25px;
@@ -2338,8 +2318,7 @@ button:active:not(:disabled),
   textarea,
   .search-form > input,
   .custom-section input,
-  .welcome-form-content input,
-  #legacy-form input {
+  .welcome-form-content input {
     font-size: 16px;
   }
 }

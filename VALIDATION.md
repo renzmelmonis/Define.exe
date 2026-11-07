@@ -54,3 +54,9 @@ After this refactor: all JavaScript syntax checks, fourteen tests, formatting, c
 Impeccable's detector reports advisory font-size differences against the existing partial type-token documentation. The accepted typography was preserved during this functional/readability revision; unrelated design-system drift was not repaired.
 
 Publication evidence: source commit `4fbbf76268df5d1bda9d4ff7535c72ea6dc4267c`, successful Pages workflow [42320800325](https://github.com/renzmelmonis/Define.exe/actions/runs/42320800325), and live browser checks at [Define.exe](https://renzmelmonis.github.io/Define.exe/). The published asset is `assets/app.fbd62bd25b.js`. The browser verified exactly two main links, no former-school or COC labels, working CPU search, and the quiz difficulty menu, with no console warnings/errors.
+
+## Final architecture cleanup
+
+At the owner's request, all compatibility handlers were removed after the earlier publication: no old-page redirects, old storage-key readers/writers, favorites conversion, historical-content verifier script/command, or compatibility information form remains. Only six current pages are generated. The current keys are define_favorites, define_scores, and define_profile_email.
+
+Twelve current tests pass; two conversion-specific tests were deleted with the removed feature. Catalog data is unchanged from the earlier verified revision: 129 terms and 35 questions. The real browser verified a current-profile create/remove cycle, saved-term persistence after navigation, a complete ten-question quiz through results, score history on the profile, and clearing test data. No console warnings/errors appeared. Source scans found no compatibility handlers or obsolete storage keys in application/build/test code. Final publication status is recorded in `.impeccable/review/revision/release.json` locally and in GitHub Actions for the commit.

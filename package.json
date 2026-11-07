@@ -10,8 +10,7 @@
     "check": "node scripts/check.mjs",
     "test": "node --test tests/*.test.js",
     "format": "prettier --write src scripts tests package.json public/manifest.json",
-    "format:check": "prettier --check src scripts tests package.json public/manifest.json",
-    "verify:migration": "node scripts/verify-migration.mjs"
+    "format:check": "prettier --check src scripts tests package.json public/manifest.json"
   },
   "engines": {
     "node": ">=20"

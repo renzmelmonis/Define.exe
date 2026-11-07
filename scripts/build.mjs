@@ -15,27 +15,6 @@ export const pages = {
   "welcome.html": ["welcome", "Welcome"],
   "profile.html": ["profile", "Your local profile"],
 };
-export const redirects = {
-  "home.html": "index.html",
-  "index..html": "welcome.html",
-  "log in.html": "welcome.html",
-  "search.html": "dictionary.html",
-  "Favoritelist.html": "saved.html",
-  "localstorage.html": "profile.html",
-  "coc selection.html": "dictionary.html",
-  "coc1.html": "dictionary.html",
-  "coc2.html": "dictionary.html",
-  "coc3.html": "dictionary.html",
-  "others.html": "dictionary.html",
-  "COC 1 DICTIONARY.html": "dictionary.html",
-  "COC 2 DICTIONARY.html": "dictionary.html",
-  "COC 3 DICTIONARY.html": "dictionary.html",
-  "OTHERS DICTIONARY.html": "dictionary.html",
-  "mini quiz.html": "quiz.html",
-  "easy quiz.html": "quiz.html?level=easy",
-  "MEDQUIZ.html": "quiz.html?level=medium",
-  "hard quiz.html": "quiz.html?level=hard",
-};
 
 function pageHTML(pageName, title, stylesheet, application) {
   return `<!doctype html>
@@ -75,31 +54,13 @@ function pageHTML(pageName, title, stylesheet, application) {
 `;
 }
 
-function redirectHTML(destination) {
-  return `<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="refresh" content="0;url=${destination}">
-    <title>Opening Define.exe</title>
-  </head>
-  <body>
-    <p>
-      This page has moved.
-      <a href="${destination}">Continue to Define.exe</a>.
-    </p>
-  </body>
-</html>
-`;
-}
-
 export async function build() {
   const outputDirectory = path.join(root, "dist");
   const publicDirectory = path.join(root, "public");
   const sourceDirectory = path.join(root, "src");
   const assetDirectory = path.join(outputDirectory, "assets");
 
+  await rm(outputDirectory, { recursive: true, force: true });
   await mkdir(outputDirectory, { recursive: true });
   await cp(publicDirectory, outputDirectory, { recursive: true });
   await mkdir(assetDirectory, { recursive: true });
@@ -154,21 +115,11 @@ export async function build() {
     await writeFile(outputPath, html);
   }
 
-  const oldFilenames = Object.keys(redirects);
-  for (const oldFilename of oldFilenames) {
-    const destination = redirects[oldFilename];
-    const html = redirectHTML(destination);
-    const outputPath = path.join(outputDirectory, oldFilename);
-    await writeFile(outputPath, html);
-  }
-
   return outputDirectory;
 }
 
 const currentFile = fileURLToPath(import.meta.url);
 if (process.argv[1] === currentFile) {
-  const oldOutput = path.join(root, "dist");
-  await rm(oldOutput, { recursive: true, force: true });
   await build();
   console.log("Built Define.exe → dist/");
 }

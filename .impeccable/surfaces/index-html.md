@@ -18,3 +18,5 @@ MOTION: One 560ms window-opening sequence explains the desktop metaphor. 140ms p
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
 
 Revision November 7: main navigation contains Dictionary and Mini Quiz only. Remove the COC directory and duplicate home quiz-level list. Keep saved terms inside Dictionary, and optional profile access secondary. Former school logo, school-email requirement, category filters, and COC labels are removed. All terms and all definitions remain.
+
+Current architecture: current-page navigation only, no redirect aliases or old-storage import handlers. Profile shows only the optional current email and quiz history.

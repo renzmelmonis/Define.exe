@@ -12,7 +12,7 @@ ICT learners looking up technical vocabulary and practicing it with quizzes. The
 Find definitions, hear pronunciations, save useful terms, and review knowledge through easy, medium, and hard quizzes.
 
 ## Capabilities and Constraints
-Static HTML, CSS, and JavaScript; no backend or authentication provider exists. The optional email entry is a browser-local profile, not secure authentication. Preserve all dictionary terms, definitions, quiz questions, and legacy entry URLs. The owner superseded the original category/branding requirement on November 7: remove the former-school logo/affiliation and COC sections, and keep every term for now. Saved terms and scores stay in this browser. Preserve legacy favorites where recoverable.
+Static HTML, CSS, and JavaScript; no backend or authentication provider exists. The optional email entry is a browser-local profile, not secure authentication. Preserve all dictionary terms, definitions, quiz questions, and the current Define.exe pages. The owner superseded the original category/branding requirement on November 7: remove the former-school logo/affiliation and COC sections, and keep every term for now. Saved terms and scores stay in this browser. Use only the current storage keys define_favorites, define_scores, and define_profile_email. The owner requested removal of every migration/import handler, old-page redirect, old storage key, and compatibility form.
 
 ## Brand Commitments
 The owner confirmed Define.exe as the visible brand and repository name, with Dictionary and Mini Quiz as the main paths. Follow /Users/renz/Downloads/Define.exe.pdf: pale blue, pixel display type, white panels, blue controls, computer/game vocabulary. The owner chose code-first implementation.
@@ -28,7 +28,7 @@ Original learning content in Git history and the supplied PDF. The former-school
 
 ## Product Principles
 - Make finding a definition immediate.
-- Preserve learning content and old links.
+- Preserve learning content and current-page navigation.
 - Show honest local profile and storage behavior.
 - Make all learning tasks usable on a phone and keyboard.
 

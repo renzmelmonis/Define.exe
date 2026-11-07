@@ -239,7 +239,7 @@ Keyboard Tab, Enter, or Space switches the document to immediate state changes: 
 - **Do** keep keyboard changes immediate and preserve visible focus outlines.
 - **Do** keep coarse-pointer text inputs, selects, and textareas at 16px to protect native input behavior.
 - **Do** describe storage truthfully: a local profile and browser storage, with a persistent warning when changes only survive on the current page.
-- **Do** preserve every term, definition, quiz question, and legacy link; keep the school logo and COC grouping removed.
+- **Do** preserve every term, definition, quiz question, and current-page link; keep the school logo and COC grouping removed.
 
 ### Don't:
 
