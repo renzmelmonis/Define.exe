@@ -42,3 +42,13 @@ The finish reviewer inspected 21 captures and confirmed the PDF's blue/pixel/whi
 ## Limits
 
 Responsive and touch emulation were checked; no physical iPhone/Android test or Safari engine run was performed. Voice output depends on the user's browser/device voices. The site remains a static browser-local learning tool; it has no online account service, cross-device sync, or secure authentication backend. Existing learning content was preserved and was not independently fact-checked as a new curriculum.
+
+## Subsequent revision: simplified workflow and readable code
+
+The owner removed former-school branding and COC navigation, confirmed repository name `Define.exe`, deferred all term removals, and required beginner-readable code. This revision supersedes the earlier school-email/category descriptions above. Main navigation is Dictionary and Mini Quiz. The dictionary remains complete; saved terms are secondary, and any valid email can create an optional local profile.
+
+The handwritten app, components, views, storage, quiz logic, build/server/check scripts, migration verifier, and tests now use ordinary named functions, explicit loops and conditionals, descriptive intermediate variables, and multiline HTML. Source checks found no arrow functions, nested ternaries, optional chaining, map/filter/reduce chains, or packed section templates. SVG drawing coordinates and static learning-data literals remain ordinary data.
+
+After this refactor: all JavaScript syntax checks, fourteen tests, formatting, clean build, and migration audit passed. The audit retains all 423 definition occurrences, 129 terms, and 35 original questions. A real browser completed another ten-question quiz through results/retry, saved and unsaved terms across navigation, added a custom term, cleared/undid/restored the collection, accepted a generic email, removed its synthetic profile, and reset test scores. Eight final desktop/mobile captures show no former-school/COC labels and document width equal to viewport width at 1440px and 390px. No browser warnings/errors appeared. Final captures and observations are in `.impeccable/review/revision/`. Physical-device/audio limitations remain.
+
+Impeccable's detector reports advisory font-size differences against the existing partial type-token documentation. The accepted typography was preserved during this functional/readability revision; unrelated design-system drift was not repaired.

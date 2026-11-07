@@ -23,3 +23,18 @@ Completed November 7, 2026 (Asia/Manila). All six canonical pages and nineteen l
 Independent full finish review matched the pinned visual direction and listed four material findings. One correction batch resolved input focus sizing, stale saved style, storage warning/fallback, and design documentation. The same reviewer scored all four resolved with disposition ship at that bounded scope. Reports reside under .impeccable/review/; documentation includes DESIGN.md and schema-v2 .impeccable/design.json.
 
 The temporary fault-injection pages are absent from the clean production build. Synthetic browser test data and emulation overrides were cleared. The task-owned preview server is stopped for handoff; restart with npm run dev. No push, deployment, or remote repository changes. Source changes are staged on redesign/define-exe and uncommitted so the owner can review the complete diff.
+
+## Current revision — November 7, 2026
+
+Owner adopted screenshot revisions and explicitly confirmed remote repository name `Define.exe`; do not remove any terms for now. Acceptance: remove former-school logo/affiliation; remove COC 1–3 sections and labels without removing definitions; make Dictionary and Mini Quiz the two main paths; preserve saved terms/pronunciation/quizzes; rename GitHub repo and origin, deploy through existing Pages workflow, verify new public URL and hand off source link. Exact term removals are deferred by the owner. Current checkout is clean main at c2bd9bc before this revision; previous local-only handoff below has since been committed and deployed by the owner.
+
+- [x] Remove school branding and category UI, keep all 129 terms/423 definitions/35 questions.
+- [x] Verify desktop/mobile search, saved terms, quiz entry, neutral profile, build, migration audit, and existing redirects.
+- [x] Rename repository to Define.exe; update remote and source/docs links.
+- [ ] Commit/push verified changes and wait for Pages deployment; verify new live URL and assets.
+
+Owner added readability requirement before publication: refactor the complete handwritten application/build code into beginner-readable, line-by-line operations. Use multiline HTML, explicit loops/conditionals, named functions, and descriptive variables rather than dense one-line templates, nested ternaries, destructuring/chained shortcuts. Preserve the completed UI revisions and functionality. Re-run syntax, domain/build tests, migration audit, desktop/mobile interaction checks, and inspect the exact final deployment. Publication and repository rename remain in the same authorized task.
+
+Readable-code refactor completed: named event handlers and normal loops; page markup is split into src/views.js; shared components are multiline; all build/preview/check/migration/test code is readable and unminified. Fourteen tests and migration audit pass. Browser completed quiz/results/retry, favorites/custom/clear/undo, and neutral profile flows after the rewrite. Final 1440/390px captures show two primary navigation links and no former-school/COC labels. Remote repo rename accepted; origin updated to https://github.com/renzmelmonis/Define.exe.git. Public URL reported by Pages is https://renzmelmonis.github.io/Define.exe/. Final commit/push/deployment verification remains.
+
+The local checkout was renamed to /Users/renz/Desktop/james/Define.exe to match the GitHub repository. The task-owned development server was stopped. The tested source is ready for the authorized main-branch publication.

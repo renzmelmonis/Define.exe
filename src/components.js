@@ -1,11 +1,14 @@
-export const escapeHTML = (value) =>
-  String(value).replace(
-    /[&<>"']/g,
-    (char) =>
-      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
-        char
-      ],
-  );
+// Escape user text before putting it inside an HTML string.
+export function escapeHTML(value) {
+  let text = String(value);
+  text = text.replaceAll("&", "&amp;");
+  text = text.replaceAll("<", "&lt;");
+  text = text.replaceAll(">", "&gt;");
+  text = text.replaceAll('"', "&quot;");
+  text = text.replaceAll("'", "&#39;");
+  return text;
+}
+
 const paths = {
   search: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/>',
   arrow: '<path d="M5 12h14m-6-6 6 6-6 6"/>',
@@ -27,15 +30,174 @@ const paths = {
   trophy:
     '<path d="M7 3h10v6a5 5 0 0 1-10 0zm5 11v6m-5 1h10M7 5H3v3c0 3 2 4 5 4m9-7h4v3c0 3-2 4-5 4"/>',
 };
-export function icon(name, cls = "") {
-  return `<svg class="icon ${cls}" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name] || paths.book}</svg>`;
+
+export function icon(name, extraClass = "") {
+  let drawing = paths[name];
+
+  if (drawing === undefined) {
+    drawing = paths.book;
+  }
+
+  return `
+    <svg
+      class="icon ${extraClass}"
+      width="22"
+      height="22"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.7"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      ${drawing}
+    </svg>
+  `;
 }
+
 export function pixelMark() {
-  return '<svg class="pixel-mark" width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M2 3h28v20H18v4h7v3H7v-3h7v-4H2z"/><path fill="#dff2ff" d="M5 6h22v14H5z"/><path fill="currentColor" d="M9 10h3v3H9zm11 0h3v3h-3zm-8 6h8v2h-8z"/></svg>';
+  return `
+    <svg
+      class="pixel-mark"
+      width="32"
+      height="32"
+      viewBox="0 0 32 32"
+      aria-hidden="true"
+    >
+      <path
+        fill="currentColor"
+        d="M2 3h28v20H18v4h7v3H7v-3h7v-4H2z"
+      />
+      <path fill="#dff2ff" d="M5 6h22v14H5z" />
+      <path
+        fill="currentColor"
+        d="M9 10h3v3H9zm11 0h3v3h-3zm-8 6h8v2h-8z"
+      />
+    </svg>
+  `;
 }
+
 export function searchForm(value = "", compact = false) {
-  return `<form class="search-form ${compact ? "compact" : ""}" action="dictionary.html" role="search"><label class="sr-only" for="dictionary-search">Search IT terms</label>${icon("search")}<input id="dictionary-search" name="q" type="search" value="${escapeHTML(value)}" placeholder="Search a term, find your aha!" autocomplete="off" spellcheck="false"><button class="search-submit" type="submit">Find a term ${icon("arrow")}</button></form>`;
+  let formClass = "search-form";
+
+  if (compact) {
+    formClass = formClass + " compact";
+  }
+
+  return `
+    <form class="${formClass}" action="dictionary.html" role="search">
+      <label class="sr-only" for="dictionary-search">Search IT terms</label>
+      ${icon("search")}
+      <input
+        id="dictionary-search"
+        name="q"
+        type="search"
+        value="${escapeHTML(value)}"
+        placeholder="Search a term, find your aha!"
+        autocomplete="off"
+        spellcheck="false"
+      >
+      <button class="search-submit" type="submit">
+        Find a term
+        ${icon("arrow")}
+      </button>
+    </form>
+  `;
 }
-export function windowBar(title, extra = "") {
-  return `<div class="window-bar"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>${escapeHTML(title)}</span>${extra || '<span class="window-symbol" aria-hidden="true">×</span>'}</div>`;
+
+export function windowBar(title) {
+  return `
+    <div class="window-bar">
+      <span class="window-dots" aria-hidden="true">
+        <i></i>
+        <i></i>
+        <i></i>
+      </span>
+      <span>${escapeHTML(title)}</span>
+      <span class="window-symbol" aria-hidden="true">×</span>
+    </div>
+  `;
+}
+
+export function saveButton(term, saved) {
+  let buttonClass = "button small";
+  let buttonIcon = "bookmark";
+  let buttonText = "Save term";
+
+  if (saved) {
+    buttonClass = buttonClass + " is-saved";
+    buttonIcon = "check";
+    buttonText = "Saved";
+  }
+
+  return `
+    <button
+      class="${buttonClass}"
+      data-action="save"
+      data-id="${escapeHTML(term.id)}"
+      aria-pressed="${saved}"
+    >
+      ${icon(buttonIcon)}
+      ${buttonText}
+    </button>
+  `;
+}
+
+export function speakButton(term) {
+  return `
+    <button
+      class="button small quiet"
+      data-action="speak"
+      data-id="${escapeHTML(term.id)}"
+    >
+      ${icon("volume")}
+      Listen
+      <span class="sr-only">to ${escapeHTML(term.term)}</span>
+    </button>
+  `;
+}
+
+export function termRow(term, saved, open) {
+  let openAttribute = "";
+  let notesHTML = "";
+
+  if (open) {
+    openAttribute = "open";
+  }
+
+  if (term.notes !== undefined) {
+    if (term.notes.length > 0) {
+      let paragraphs = "";
+
+      for (const note of term.notes) {
+        paragraphs = paragraphs + `<p>${escapeHTML(note.text)}</p>\n`;
+      }
+
+      notesHTML = `
+        <details class="reference-note">
+          <summary>More about this term</summary>
+          ${paragraphs}
+        </details>
+      `;
+    }
+  }
+
+  return `
+    <details class="term-row" ${openAttribute}>
+      <summary>
+        <span class="term-name">${escapeHTML(term.term)}</span>
+        <span class="term-full">${escapeHTML(term.full)}</span>
+        <span class="expand-symbol" aria-hidden="true">+</span>
+      </summary>
+      <div class="term-body">
+        <p>${escapeHTML(term.meaning)}</p>
+        ${notesHTML}
+        <div class="button-group">
+          ${saveButton(term, saved)}
+          ${speakButton(term)}
+        </div>
+      </div>
+    </details>
+  `;
 }

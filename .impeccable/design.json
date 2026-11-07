@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-06T16:08:35.428912+00:00",
+  "generatedAt": "2026-11-07T00:38:32.454369+00:00",
   "title": "Design System: Define.exe",
   "extensions": {
     "colorMeta": {
@@ -249,7 +249,7 @@
       },
       "category": {
         "displayName": "Category",
-        "purpose": "Uppercase category metadata."
+        "purpose": "Uppercase custom-term metadata; no COC categories."
       },
       "dictionary-term": {
         "displayName": "Dictionary Term",
@@ -355,7 +355,7 @@
         "PRODUCT.md",
         ".impeccable/surfaces/index-html.md"
       ],
-      "shippingRaster": "public/assets/school-logo.png; embedded impeccable:prompt metadata records original OC LOGO.jpg from https://github.com/renzmelmonis/Terminotech-website at commit 8a8fcd2013c5775ee819d026cc9b006e0d1140b1, copied without visual alteration.",
+      "shippingRaster": "None. Former-school raster removed at the owner’s request on November 7, 2026.",
       "generatedComp": false
     }
   },
@@ -396,8 +396,8 @@
       "name": "Text Field",
       "kind": "input",
       "refersTo": "input",
-      "description": "Labeled school email field; local profile entry.",
-      "html": "<label class=\"ds-label\" for=\"ds-email\">School email</label><input class=\"ds-input\" id=\"ds-email\" type=\"email\" placeholder=\"you@olivarezcollegetagaytay.edu.ph\">",
+      "description": "Optional email address for a browser-local profile.",
+      "html": "<label class=\"ds-label\" for=\"ds-email\">Email address</label><input class=\"ds-input\" id=\"ds-email\" type=\"email\" placeholder=\"you@example.com\">",
       "css": ".ds-label{display:block;font-family:var(--body, \"Arial\", \"Helvetica Neue\", sans-serif);font-size:12px;font-weight:600;margin-bottom:9px;color:var(--ink, #152c3b)}.ds-input{max-width:100%;min-width:0;border:1px solid var(--line, #95b7cc);border-radius:9px;background:var(--paper, #fff);padding:13px 15px;color:var(--ink, #152c3b);font-family:var(--body, \"Arial\", \"Helvetica Neue\", sans-serif);font-size:13px;outline:none}.ds-input::placeholder{color:var(--secondary, #405d71);opacity:1}.ds-input:focus{border-color:var(--accent, #245f8a)}.ds-input:focus-visible{outline:3px solid var(--accent, #245f8a);outline-offset:4px;}.ds-input[aria-invalid=\"true\"]{border-color:var(--red, #a43838)}@media(pointer:coarse){.ds-input{font-size:16px}}"
     },
     {
@@ -405,23 +405,15 @@
       "kind": "nav",
       "refersTo": "navigation",
       "description": "Active page rule and saved-count badge.",
-      "html": "<nav class=\"ds-nav\" aria-label=\"Main navigation\"><a href=\"dictionary.html\" aria-current=\"page\">Dictionary</a><a href=\"saved.html\">Saved <span class=\"ds-count\">2</span></a><a href=\"quiz.html\">Mini quiz</a></nav>",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Main navigation\"><a href=\"dictionary.html\" aria-current=\"page\">Dictionary</a><a href=\"quiz.html\">Mini quiz</a></nav>",
       "css": ".ds-nav{display:flex;align-items:center;gap:32px;font-family:var(--body, \"Arial\", \"Helvetica Neue\", sans-serif);color:var(--ink, #152c3b)}.ds-nav a{position:relative;display:flex;align-items:center;gap:7px;min-height:44px;font-size:14px;font-weight:600;color:inherit;text-decoration:none}.ds-nav a[aria-current=\"page\"]:after{content:\"\";position:absolute;bottom:3px;left:0;right:0;height:3px;background:var(--accent, #245f8a)}.ds-count{display:inline-grid;place-items:center;min-width:21px;height:21px;border:1px solid var(--line, #95b7cc);border-radius:6px;font-size:11px;font-variant-numeric:tabular-nums;padding:0 4px}.ds-nav a:focus-visible{outline:3px solid var(--accent, #245f8a);outline-offset:4px;}@media(hover:hover) and (pointer:fine){.ds-nav a:hover{color:var(--accent, #245f8a)}}@media(max-width:760px){.ds-nav{gap:20px;justify-content:space-between}.ds-nav a{font-size:12px;min-height:46px}}"
-    },
-    {
-      "name": "Category Filter",
-      "kind": "chip",
-      "refersTo": "filter-chip",
-      "description": "Toggle-style category filters.",
-      "html": "<div class=\"ds-filters\"><button class=\"ds-chip\" aria-pressed=\"true\">All terms</button><button class=\"ds-chip\" aria-pressed=\"false\">COC 1</button></div>",
-      "css": ".ds-filters{display:flex;flex-wrap:wrap;gap:9px}.ds-chip{font-family:var(--body, \"Arial\", \"Helvetica Neue\", sans-serif);padding:8px 16px;min-height:38px;line-height:1.4;border:1px solid var(--line, #95b7cc);border-radius:7px;font-size:12px;background:transparent;color:var(--ink, #152c3b);cursor:pointer;transition:background-color 160ms ease}.ds-chip[aria-pressed=\"true\"]{background:var(--ink, #152c3b);color:var(--paper, #fff);border-color:var(--ink, #152c3b)}.ds-chip:focus-visible{outline:3px solid var(--accent, #245f8a);outline-offset:4px;}@media(hover:hover) and (pointer:fine){.ds-chip:hover:not([aria-pressed=\"true\"]){background:var(--sky-deep, #bddff5)}}"
     },
     {
       "name": "Reading Window",
       "kind": "card",
       "refersTo": "window",
       "description": "Signature framed reading surface with decorative chrome.",
-      "html": "<section class=\"ds-window\"><div class=\"ds-bar\"><span class=\"ds-dots\" aria-hidden=\"true\"><i></i><i></i><i></i></span><span>a-little-discovery.exe</span><span aria-hidden=\"true\">×</span></div><div class=\"ds-content\"><span class=\"ds-category\">COC 1</span><h3>CPU</h3><p>The brain of the computer that processes instructions from programs and software.</p></div></section>",
+      "html": "<section class=\"ds-window\"><div class=\"ds-bar\"><span class=\"ds-dots\" aria-hidden=\"true\"><i></i><i></i><i></i></span><span>a-little-discovery.exe</span><span aria-hidden=\"true\">×</span></div><div class=\"ds-content\"><h3>CPU</h3><p>The brain of the computer that processes instructions from programs and software.</p></div></section>",
       "css": ".ds-window{border:1px solid var(--line, #95b7cc);border-radius:var(--radius, 14px);overflow:hidden;background:var(--paper, #fff);color:var(--ink, #152c3b);font-family:var(--body, \"Arial\", \"Helvetica Neue\", sans-serif);}.ds-bar{min-height:43px;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:10px 19px;background:#f3f9fd;border-bottom:1px solid var(--soft-line, #c9deeb);font-size:11px;color:var(--secondary, #405d71)}.ds-dots{display:flex;gap:5px}.ds-dots i{display:block;width:7px;height:7px;border:1px solid var(--line, #95b7cc);border-radius:50%}.ds-dots i:first-child{background:var(--sky-deep, #bddff5)}.ds-content{padding:29px 24px 31px}.ds-category{font-size:10px;letter-spacing:.04em;font-weight:600;text-transform:uppercase;color:var(--secondary, #405d71)}.ds-content h3{font-family:var(--display, Silkscreen, monospace);font-size:43px;font-weight:700;letter-spacing:-.035em;line-height:1.15;margin:9px 0 11px}.ds-content p{margin:0;font-size:15px;line-height:1.75;max-width:72ch}"
     },
     {
@@ -473,13 +465,13 @@
       "Do keep keyboard changes immediate and preserve visible focus outlines.",
       "Do keep coarse-pointer text inputs, selects, and textareas at 16px to protect native input behavior.",
       "Do describe storage truthfully: a local profile and browser storage, with a persistent warning when changes only survive on the current page.",
-      "Do preserve original term categories, learning content, legacy links, and the school seal."
+      "Do preserve every term, definition, quiz question, and legacy link; keep school branding and COC grouping removed."
     ],
     "donts": [
       "Don’t restore the replaced green visual world or introduce a foreign palette.",
       "Don’t set definitions or long instructions in pixel display type.",
       "Don’t add looping animation, animated cursors, or decorative motion to reading tasks.",
-      "Don’t present the local school-email profile as an online account or secure authentication.",
+      "Don’t present the optional local email profile as an online account or secure authentication.",
       "Don’t turn decorative window dots or the title-bar × into misleading interactive controls."
     ]
   }

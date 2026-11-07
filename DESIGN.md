@@ -100,12 +100,6 @@ components:
   navigation:
     textColor: "{colors.ink}"
     height: "44px"
-  filter-chip:
-    backgroundColor: "transparent"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.chip}"
-    padding: "8px 16px"
-    height: "38px"
   window:
     backgroundColor: "{colors.paper}"
     textColor: "{colors.ink}"
@@ -176,7 +170,7 @@ The palette is a cool classroom desktop: pale blue surroundings, white paper, an
 - **Headline:** section titles use the headline role. General page titles use (`clamp(32px, 4.2vw, 54px)`), bold, with the same heading rhythm.
 - **Term:** featured words use bold Silkscreen (`clamp(30px, 4vw, 50px)`, line height `1.15`); dictionary terms use the regular dictionary-term role.
 - **Body:** the base role is supplemented by definition text (`17px`, line height `1.7`) and dictionary explanation text (`15px`, line height `1.75`). Paragraphs generally cap at `70ch`; expanded definitions at `72ch`.
-- **Label:** controls use the label role, with smaller metadata where appropriate. Category labels are uppercase and lightly tracked; prose remains sentence case.
+- **Label:** controls use the label role, with smaller metadata where appropriate. Custom-term metadata is uppercase and lightly tracked; prose remains sentence case.
 
 **The Two Voices Rule.** Use Silkscreen for identity, section headings, and term names; use the body stack for definitions, instructions, and controls.
 
@@ -184,7 +178,7 @@ The palette is a cool classroom desktop: pale blue surroundings, white paper, an
 
 The shared desktop container is centered at `min(1160px, calc(100% - 96px))`. The header is a single row (`112px`) with brand, text navigation, and profile access. Wider content is arranged through purposeful two-column groups; reading windows keep their content aligned with the shared container. Dictionary results are divided rows, not a grid of detached cards.
 
-At `1050px` and below the container leaves `32px` side gutters and column gaps contract. At `760px` and below gutters become `20px`: navigation moves to its own second row, reading groups stack, shortcut controls retain two equal columns, and the four-category directory becomes two columns. The mobile search button shows the arrow while retaining its accessible text. Quiz question interiors reduce from `38px 42px 30px` to `26px 20px 21px`. At `359px` and below gutters become `14px` and dense labels reduce further. At `1500px` and above only the home hero top spacing increases (`95px`). These are observed layout queries, not a new device taxonomy.
+At `1050px` and below the container leaves `32px` side gutters and column gaps contract. At `760px` and below gutters become `20px`: navigation moves to its own second row, reading groups stack, shortcut controls retain two equal columns, and the two main navigation links remain visible. The mobile search button shows the arrow while retaining its accessible text. Quiz question interiors reduce from `38px 42px 30px` to `26px 20px 21px`. At `359px` and below gutters become `14px` and dense labels reduce further. At `1500px` and above only the home hero top spacing increases (`95px`). These are observed layout queries, not a new device taxonomy.
 
 Touch behavior is capability-based: hover effects require both fine pointer and hover support. A later coarse-pointer query sets all text inputs, selects, and textareas to `16px`, overriding smaller mobile labels without disabling user zoom. Preserve that order and protection.
 
@@ -196,9 +190,9 @@ This is predominantly a flat, bordered system. White surfaces, pale bars, blue o
 
 ## Shapes
 
-Use the frontmatter radius vocabulary: the main window is the softest recurring content frame, controls are more compact, and small tags are tighter still. Borders are fine (`1px`) and blue. Icons are inline SVG outlines, with a filled pixel monitor for the brand. Native disclosure rows use a plus/minus mark, and quiz options combine a letter tile with a circular selection indicator. Circular school seals and status dots retain their established shape.
+Use the frontmatter radius vocabulary: the main window is the softest recurring content frame, controls are more compact, and small tags are tighter still. Borders are fine (`1px`) and blue. Icons are inline SVG outlines, with a filled pixel monitor for the brand. Native disclosure rows use a plus/minus mark, and quiz options combine a letter tile with a circular selection indicator. Status dots retain their established circular shape.
 
-The supplied school seal is the only shipping raster (`public/assets/school-logo.png`), copied without visual alteration from the original `OC LOGO.jpg` in the source repository at commit `8a8fcd2013c5775ee819d026cc9b006e0d1140b1`. Its PNG `impeccable:prompt` metadata records that source; keep the embedded provenance. No generated comp is part of this code-first design; review screenshots are evidence, not product imagery.
+The owner removed the former-school seal and affiliation on November 7, 2026. The shipping UI uses local fonts and SVG icons; no school raster remains. Review screenshots are evidence, not product imagery.
 
 ## Components
 
@@ -212,9 +206,9 @@ On a fine hover pointer, default controls turn Hover Blue, primary controls turn
 
 Search is one white outlined container with a borderless text field and inset dark submit button. Its focus-within outline surrounds the whole group (`2px`, offset `3px`). Standard fields use the control radius, a fine frame, `13px 15px` padding, a darker focus border, and a red invalid border. Use actual labels and helper/error associations. Coarse-pointer editable controls keep the native-safe `16px` font size.
 
-### Navigation and filters
+### Navigation and saved terms
 
-Navigation is text-first with a small bordered saved-count badge. The active route has a bottom Action Blue rule (`3px`) and `aria-current="page"`. On mobile, it remains a visible horizontal row below the brand. Filters are compact framed chips with `38px` minimum height; the selected chip uses deep ink, white, and `aria-pressed`. Wrapping chips preserve the content width.
+Navigation is text-first with exactly two primary links: Dictionary and Mini Quiz. The active route has a bottom Action Blue rule (3px) and aria-current="page". On mobile both links remain visible below the brand. Saved terms and their count live inside the dictionary, rather than becoming a third primary path. COC filters and directory sections are removed; dictionary disclosures retain all terms and definitions.
 
 ### Reading windows
 
@@ -245,14 +239,14 @@ Keyboard Tab, Enter, or Space switches the document to immediate state changes: 
 - **Do** keep keyboard changes immediate and preserve visible focus outlines.
 - **Do** keep coarse-pointer text inputs, selects, and textareas at 16px to protect native input behavior.
 - **Do** describe storage truthfully: a local profile and browser storage, with a persistent warning when changes only survive on the current page.
-- **Do** preserve original term categories, learning content, legacy links, and the school seal.
+- **Do** preserve every term, definition, quiz question, and legacy link; keep the school logo and COC grouping removed.
 
 ### Don't:
 
 - **Don’t** restore the replaced green visual world or introduce a foreign palette.
 - **Don’t** set definitions or long instructions in pixel display type.
 - **Don’t** add looping animation, animated cursors, or decorative motion to reading tasks.
-- **Don’t** present the local school-email profile as an online account or secure authentication.
+- **Don’t** present the optional local email profile as an online account or secure authentication.
 - **Don’t** turn decorative window dots or the title-bar × into misleading interactive controls.
 
 Local review evidence: [initial finish review](.impeccable/review/finish-review.md) and [final correction verdict](.impeccable/review/finish-verdict.md). The final `ship` verdict resolves the four listed findings; screenshots and these local reports are Git-ignored QA records.

@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "node scripts/dev.mjs",
     "build": "node scripts/build.mjs",
-    "check": "node --check src/app.js && node --check src/components.js && node --check src/storage.js && node --check src/quiz.js && node --check scripts/build.mjs && node --check scripts/dev.mjs",
+    "check": "node scripts/check.mjs",
     "test": "node --test tests/*.test.js",
     "format": "prettier --write src scripts tests package.json public/manifest.json",
     "format:check": "prettier --check src scripts tests package.json public/manifest.json",

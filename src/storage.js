@@ -1,73 +1,140 @@
-export function createStore(storage, onError = () => {}) {
-  // Failed writes remain readable for this page. Successful writes always read
-  // the underlying store so changes from other tabs are not hidden by a cache.
-  const temporary = new Map();
-  function read(key, fallback) {
+// Read and write browser data in one place.
+// If a write fails, keep that value in memory until this page is left.
+export function createStore(storage, onError) {
+  if (onError === undefined) {
+    onError = function () {};
+  }
+
+  const temporaryValues = new Map();
+
+  function raw(key) {
     try {
-      const value = temporary.has(key)
-        ? temporary.get(key)
-        : storage.getItem(key);
-      return value === null ? fallback : JSON.parse(value);
+      let value;
+
+      if (temporaryValues.has(key)) {
+        value = temporaryValues.get(key);
+      } else {
+        value = storage.getItem(key);
+      }
+
+      if (value === null) {
+        return "";
+      }
+
+      return value;
+    } catch {
+      return "";
+    }
+  }
+
+  function read(key, fallback) {
+    const text = raw(key);
+
+    if (text === "") {
+      return fallback;
+    }
+
+    try {
+      return JSON.parse(text);
     } catch {
       return fallback;
     }
   }
+
   function write(key, value) {
-    const serialized = JSON.stringify(value);
+    const text = JSON.stringify(value);
+
     try {
-      storage.setItem(key, serialized);
-      temporary.delete(key);
+      storage.setItem(key, text);
+      temporaryValues.delete(key);
       return true;
     } catch {
-      temporary.set(key, serialized);
+      temporaryValues.set(key, text);
       onError();
       return false;
     }
   }
+
+  function remove(key) {
+    try {
+      storage.removeItem(key);
+      temporaryValues.delete(key);
+      return true;
+    } catch {
+      temporaryValues.set(key, null);
+      onError();
+      return false;
+    }
+  }
+
   return {
-    read,
-    write,
-    raw(key) {
-      try {
-        return (
-          (temporary.has(key) ? temporary.get(key) : storage.getItem(key)) || ""
-        );
-      } catch {
-        return "";
-      }
-    },
-    remove(key) {
-      try {
-        storage.removeItem(key);
-        temporary.delete(key);
-        return true;
-      } catch {
-        temporary.set(key, null);
-        onError();
-        return false;
-      }
-    },
+    read: read,
+    write: write,
+    raw: raw,
+    remove: remove,
   };
 }
+
+// Older versions used two different favorites formats.
+// Convert both formats once so existing discoveries are not lost.
 export function migrateFavorites(store, catalog) {
-  const current = store.read("define_favorites", null);
-  if (Array.isArray(current))
-    return current.filter((item) => typeof item === "string");
-  const old = store.read("favorites", []);
-  const legacy = store
-    .raw("favoritesAll")
-    .split("\n")
-    .map((line) => line.split(" - ")[0].trim())
-    .filter(Boolean);
-  const saved = [...(Array.isArray(old) ? old : []), ...legacy]
-    .filter((term) => typeof term === "string")
-    .map(
-      (term) =>
-        catalog.find((item) => item.term.toLowerCase() === term.toLowerCase())
-          ?.id || term.trim(),
-    )
-    .filter(Boolean);
-  const unique = [...new Set(saved)];
-  store.write("define_favorites", unique);
-  return unique;
+  const currentFavorites = store.read("define_favorites", null);
+  const savedTerms = [];
+
+  if (Array.isArray(currentFavorites)) {
+    for (const item of currentFavorites) {
+      if (typeof item === "string") {
+        savedTerms.push(item);
+      }
+    }
+
+    return savedTerms;
+  }
+
+  const oldFavorites = store.read("favorites", []);
+  const oldCombinedText = store.raw("favoritesAll");
+  const oldLines = oldCombinedText.split("\n");
+  const itemsToConvert = [];
+
+  if (Array.isArray(oldFavorites)) {
+    for (const item of oldFavorites) {
+      itemsToConvert.push(item);
+    }
+  }
+
+  for (const line of oldLines) {
+    const parts = line.split(" - ");
+    const word = parts[0].trim();
+
+    if (word !== "") {
+      itemsToConvert.push(word);
+    }
+  }
+
+  for (const item of itemsToConvert) {
+    if (typeof item !== "string") {
+      continue;
+    }
+
+    let savedName = item.trim();
+    const lowercaseName = savedName.toLowerCase();
+
+    for (const term of catalog) {
+      if (term.term.toLowerCase() === lowercaseName) {
+        savedName = term.id;
+        break;
+      }
+    }
+
+    if (savedName === "") {
+      continue;
+    }
+
+    if (!savedTerms.includes(savedName)) {
+      savedTerms.push(savedName);
+    }
+  }
+
+  store.write("define_favorites", savedTerms);
+  return savedTerms;
 }

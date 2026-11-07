@@ -4,32 +4,46 @@ import { readFile, stat } from "node:fs/promises";
 import path from "node:path";
 import { build, pages, redirects } from "../scripts/build.mjs";
 
-test("build emits all canonical pages, complete asset links, and all legacy redirects", async () => {
-  const out = await build();
-  for (const [file, [page]] of Object.entries(pages)) {
-    const html = await readFile(path.join(out, file), "utf8");
-    assert.ok(html.includes(`data-page="${page}"`));
+test("build emits all canonical pages, complete asset links, and all legacy redirects", async function () {
+  const outputDirectory = await build();
+  const filenames = Object.keys(pages);
+
+  for (const filename of filenames) {
+    const settings = pages[filename];
+    const pageName = settings[0];
+    const outputPath = path.join(outputDirectory, filename);
+    const html = await readFile(outputPath, "utf8");
+    assert.ok(html.includes('data-page="' + pageName + '"'));
     assert.ok(html.includes('name="viewport"'));
     assert.ok(html.includes('lang="en"'));
-    for (const asset of [
-      ...html.matchAll(/(?:src|href)="(assets\/[^"#]+|manifest\.json)"/g),
-    ].map((m) => m[1])) {
-      assert.ok(
-        (await stat(path.join(out, asset))).isFile(),
-        `${file}: ${asset}`,
-      );
+
+    const assetPattern = /(?:src|href)="(assets\/[^"#]+|manifest\.json)"/g;
+    const assetLinks = html.matchAll(assetPattern);
+    for (const asset of assetLinks) {
+      const assetPath = path.join(outputDirectory, asset[1]);
+      const information = await stat(assetPath);
+      assert.ok(information.isFile(), filename + ": " + asset[1]);
     }
   }
-  assert.equal(Object.keys(redirects).length, 19);
-  for (const [file, target] of Object.entries(redirects)) {
-    const html = await readFile(path.join(out, file), "utf8");
-    assert.ok(html.includes(`content="0;url=${target}"`));
-    assert.ok(Object.hasOwn(pages, target.split("?")[0]));
+
+  const oldFilenames = Object.keys(redirects);
+  assert.equal(oldFilenames.length, 19);
+  for (const filename of oldFilenames) {
+    const destination = redirects[filename];
+    const outputPath = path.join(outputDirectory, filename);
+    const html = await readFile(outputPath, "utf8");
+    assert.ok(html.includes('content="0;url=' + destination + '"'));
+    const destinationParts = destination.split("?");
+    assert.ok(Object.hasOwn(pages, destinationParts[0]));
   }
-  const manifest = JSON.parse(
-    await readFile(path.join(out, "manifest.json"), "utf8"),
-  );
+
+  const manifestPath = path.join(outputDirectory, "manifest.json");
+  const manifestText = await readFile(manifestPath, "utf8");
+  const manifest = JSON.parse(manifestText);
   assert.equal(manifest.name, "Define.exe");
-  for (const icon of manifest.icons)
-    assert.ok((await stat(path.join(out, icon.src))).isFile());
+  for (const icon of manifest.icons) {
+    const iconPath = path.join(outputDirectory, icon.src);
+    const information = await stat(iconPath);
+    assert.ok(information.isFile());
+  }
 });
